@@ -1,0 +1,4 @@
+com\mycompany\compiladoresscanner\Token.class
+com\mycompany\compiladoresscanner\TipoToken.class
+com\mycompany\compiladoresscanner\Scanner.class
+com\mycompany\compiladoresscanner\CompiladoresScanner.class
