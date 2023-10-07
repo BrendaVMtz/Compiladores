@@ -8,6 +8,7 @@ package com.mycompany.compiladoresscanner;
 
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -48,13 +49,32 @@ public class CompiladoresScanner {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
+        
+        
         for(;;){
+            
             System.out.print(">>> ");
-            String linea = reader.readLine();
-            if(linea == null) break; // Presionar Ctrl + D
-            ejecutar(linea);
+            String direcc = reader.readLine();
+            String cdirec = "C:\\Users\\karel\\Downloads\\"+direcc;
+            String temp= "";
+            String texto = "";
+            try{
+                BufferedReader bf = new BufferedReader (new FileReader(cdirec));
+                
+                String bfRead = "";
+                while((bfRead = bf.readLine()) != null){
+                        temp+= bfRead;
+                }
+                texto = temp;
+            }catch(Exception e){
+                System.out.print("Error de nombre");
+            }
+            if(texto == null) break; // Presionar Ctrl + D
+            ejecutar(texto);
             existenErrores = false;
+            
         }
+        
     }
 
     private static void ejecutar(String source) {
@@ -86,5 +106,8 @@ public class CompiladoresScanner {
                 "[linea " + linea + "] Error " + posicion + ": " + mensaje
         );
         existenErrores = true;
+    }
+    public void leer(String direccion){
+        
     }
 }

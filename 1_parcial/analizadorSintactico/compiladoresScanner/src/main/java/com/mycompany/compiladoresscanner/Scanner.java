@@ -30,15 +30,15 @@ public class Scanner {
     private final List<Token> tokens = new ArrayList<>();
     
     public Scanner(String source){
-        this.source = source + " ";
+        this.source = source + "";
     }
 
     public List<Token> scan() throws Exception {
         String lexema = "";
-        
+        String lexema2 = "";
         int estado = 0;
         char c;
-        int d =0;
+        
         
         
         
@@ -56,14 +56,19 @@ public class Scanner {
                         lexema += c;
                     }else if(c == '"'){
                         estado = 1;
+                        lexema+=c;
                     }else if(c == '<'){
                         estado = 2;
+                        lexema+=c;
                     }else if(c == '>'){
                         estado = 3;
+                        lexema+=c;
                     }else if(c == '='){
                         estado = 4;
+                        lexema+=c;
                     }else if(c == '!'){
                         estado = 5;
+                        lexema+=c;
                     }else if(c == '/'){
                         estado = 6;
                     }
@@ -87,7 +92,6 @@ public class Scanner {
                             Token t = new Token(tt, lexema);
                             tokens.add(t);
                         }
-
                         estado = 0;
                         lexema = "";
                         i--;
@@ -148,18 +152,21 @@ public class Scanner {
                 case 1:
                     if(Character.isLetter(c)){
                         estado = 1;
-                        lexema +=c;
-                    }else if(c == ' '){
+                        lexema2 +=c;
+                    }else if(c == '\r'){
                         System.out.println("Error : Salto de linea");
-                        System.exit(0);
                     }
                     else if(c == '"'){
-                        
-                        Token t = new Token(TipoToken.STRING, lexema);
+                        lexema+=c;
+                        Token t = new Token(TipoToken.STRING, lexema, lexema2);
                         tokens.add(t);
 
                         estado = 0;
                         lexema = "";
+                        lexema2 = "";
+                        
+                    }else if(c==';'){
+                        estado = 0;
                         i--;
                     }
                 break;
@@ -234,6 +241,7 @@ public class Scanner {
                         lexema = "";
                         i--;
                     }
+                    
                 break;
                 //////////////////////////////////////////////////////////////
                 case 6:
@@ -241,13 +249,6 @@ public class Scanner {
                         estado = 7;
                     }else if(c == '/'){
                         estado = 10;
-                    }else{
-                        Token t = new Token(TipoToken.SLASH, lexema);
-                        tokens.add(t);
-
-                        estado = 0;
-                        lexema = "";
-                        i--;
                     }
                 break;
                 
@@ -256,7 +257,6 @@ public class Scanner {
                         estado = 8;
                     }else{
                         estado = 7;
-                        lexema+= c;
                     }
                 break;
                 
@@ -264,20 +264,17 @@ public class Scanner {
                     if(c == '*'){
                         estado = 8;
                     }else if(c =='/'){
-                        System.out.print(""+lexema);
                     }
                     else{
                         estado = 7;
-                        lexema+= c;
                     }
                 break;
                 
                 case 10:
-                    if(c == ' '){
-                        System.out.print(""+lexema);
+                    if(c == '\r'){
+                        estado=0;
                     }else{
                         estado = 10;
-                        lexema+=c;
                     }
 /////////////////////////////////////////////////////////////////
                 
