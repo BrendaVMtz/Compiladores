@@ -249,6 +249,13 @@ public class Scanner {
                         estado = 7;
                     }else if(c == '/'){
                         estado = 10;
+                    }else{
+                        Token t = new Token(TipoToken.SLASH, "");
+                        tokens.add(t);
+
+                        estado = 0;
+                        lexema = "";
+                        i--; 
                     }
                 break;
                 
