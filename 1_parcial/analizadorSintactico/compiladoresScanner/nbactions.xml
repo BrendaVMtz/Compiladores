@@ -15,7 +15,7 @@
                 <exec.appArgs>Prueba1.txt</exec.appArgs>
                 <exec.mainClass>com.mycompany.compiladoresscanner.CompiladoresScanner</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\karel\OneDrive\Documentos\NetBeansProjects\compi\lexico\Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
+                <exec.workingdir>C:\Users\leo\Documents\5 semestre\6. Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -34,7 +34,7 @@
                 <exec.mainClass>com.mycompany.compiladoresscanner.CompiladoresScanner</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.workingdir>C:\Users\karel\OneDrive\Documentos\NetBeansProjects\compi\lexico\Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
+                <exec.workingdir>C:\Users\leo\Documents\5 semestre\6. Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -52,7 +52,7 @@
                 <exec.mainClass>com.mycompany.compiladoresscanner.CompiladoresScanner</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <exec.appArgs>Prueba1.txt</exec.appArgs>
-                <exec.workingdir>C:\Users\karel\OneDrive\Documentos\NetBeansProjects\compi\lexico\Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
+                <exec.workingdir>C:\Users\leo\Documents\5 semestre\6. Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
             </properties>
         </action>
     </actions>
