@@ -54,21 +54,9 @@ public class CompiladoresScanner {
         for(;;){
             
             System.out.print(">>> ");
-            String direcc = reader.readLine();
-            String cdirec = "C:\\Users\\karel\\Downloads\\"+direcc;
-            String temp= "";
-            String texto = "";
-            try{
-                BufferedReader bf = new BufferedReader (new FileReader(cdirec));
-                
-                String bfRead = "";
-                while((bfRead = bf.readLine()) != null){
-                        temp+= bfRead;
-                }
-                texto = temp;
-            }catch(Exception e){
-                System.out.print("Error de nombre");
-            }
+            String texto = reader.readLine();
+            
+            
             if(texto == null) break; // Presionar Ctrl + D
             ejecutar(texto);
             existenErrores = false;

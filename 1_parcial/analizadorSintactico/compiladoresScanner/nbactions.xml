@@ -12,10 +12,10 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>Prueba1.txt</exec.appArgs>
+                <exec.appArgs>Prueba8.txt</exec.appArgs>
                 <exec.mainClass>com.mycompany.compiladoresscanner.CompiladoresScanner</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\leo\Documents\5 semestre\6. Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
+                <exec.workingdir>C:\Users\karel\OneDrive\Documentos\NetBeansProjects\compi\lexico\Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -30,11 +30,11 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>Prueba1.txt</exec.appArgs>
+                <exec.appArgs>Prueba8.txt</exec.appArgs>
                 <exec.mainClass>com.mycompany.compiladoresscanner.CompiladoresScanner</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.workingdir>C:\Users\leo\Documents\5 semestre\6. Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
+                <exec.workingdir>C:\Users\karel\OneDrive\Documentos\NetBeansProjects\compi\lexico\Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -51,8 +51,8 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>com.mycompany.compiladoresscanner.CompiladoresScanner</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>Prueba1.txt</exec.appArgs>
-                <exec.workingdir>C:\Users\leo\Documents\5 semestre\6. Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
+                <exec.appArgs>Prueba8.txt</exec.appArgs>
+                <exec.workingdir>C:\Users\karel\OneDrive\Documentos\NetBeansProjects\compi\lexico\Compiladores\1_parcial\analizadorSintactico\compiladoresScanner\src\main\java\com\mycompany\compiladoresscanner</exec.workingdir>
             </properties>
         </action>
     </actions>
