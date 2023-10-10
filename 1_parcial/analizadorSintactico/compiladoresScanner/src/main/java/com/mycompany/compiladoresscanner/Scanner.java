@@ -218,6 +218,7 @@ public class Scanner {
                 case 1:
                     if(c == '\r'){
                         System.out.println("Error : Salto de linea");
+                        return null;
                     }
                     else if(c == '"'){
                         lexema+=c;
