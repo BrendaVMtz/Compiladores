@@ -131,6 +131,12 @@ public class Scanner {
                         tokens.add(t);
                         estado=0;
                         lexema="";
+                    }else if (c == '['){
+                        System.out.println("Error");
+                        return null;
+                    }else if (c == ']'){
+                        System.out.println("Error");
+                        return null;
                     }
 
                     break;
