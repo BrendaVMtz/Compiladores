@@ -17,10 +17,13 @@ public class ASDR implements Parser{
     private int i = 0;
     boolean chec=false;
     private boolean hayErrores = false;
+    private boolean acept = false;
     private Token preanalisis;
     private final List<Token> tokens;
+    int estado =0;
     
     Stack<String> pila = new Stack<>();
+    Stack simbolo = new Stack<>();
         public ASDR(List<Token> tokens){
         this.tokens = tokens;
         preanalisis = this.tokens.get(i);
@@ -28,11 +31,8 @@ public class ASDR implements Parser{
 
     @Override
     public boolean parse() {
-        pila.push("$");
-        pila.push("Q");
-
+        pila.push("0");
         comprobacion();
-
         if(preanalisis.tipo == TipoToken.EOF & pila.peek().equals("$")){
             System.out.println("Consulta correcta");
             
@@ -42,179 +42,189 @@ public class ASDR implements Parser{
         }
         return false;
     }
+    
     private void comprobacion(){
-        String lexema="";
-        lexema+=preanalisis.tipo;
-        while(!pila.peek().equals("$")){
-            chec=false;
-            System.out.print(""+lexema);
-            System.out.print(" "+pila.peek());
-            System.out.print("\n");
+        
+        while(acept!=true){
+            estado=Integer.parseInt(pila.peek());
             pilaI();
-            if(pila.peek().equals(lexema)){
-                i++;
-                pila.pop();
-                preanalisis=tokens.get(i);
-                lexema="";
-                lexema+=preanalisis.tipo;
-                System.out.print("=\n");
-                chec=true;
-            }
-            if(chec==false){
-                break;
-            }
         }
+        
     }
     
     
     private void pilaI(){
-        if(preanalisis.tipo==TipoToken.SELECT && "Q".equals(pila.peek())){
-            pila.pop();
-            pila.push("T");
-            pila.push("FROM");
-            pila.push("D");
-            pila.push("SELECT");
-            System.out.println("1\n");
-            chec=true;
-        }
-        
-        ////////////////////////////7
-        if(preanalisis.tipo==TipoToken.DISTINCT && "D".equals(pila.peek())){
-            pila.pop();
-            pila.push("P");
-            pila.push("DISTINCT");
-            System.out.println("2\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.ASTERISCO && "D".equals(pila.peek())){
-            pila.pop();
-            pila.push("P");
-            System.out.println("3\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "D".equals(pila.peek())){
-            pila.pop();
-            pila.push("P");
-            System.out.println("3\n");
-            chec=true;
-        }
-        /////////////////////////////
-        if(preanalisis.tipo==TipoToken.ASTERISCO && "P".equals(pila.peek())){
-            pila.pop();
-            pila.push("ASTERISCO");
-            System.out.println("4\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "P".equals(pila.peek())){
-            pila.pop();
-            pila.push("A");
-            System.out.println("5\n");
-            chec=true;
-        }
-        ////////////////////////////
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "A".equals(pila.peek())){
-            pila.pop();
-            pila.push("A1");
-            pila.push("A2");
-            System.out.println("6\n");
-            chec=true;
-        }
-        
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "A1".equals(pila.peek())){
-            pila.pop();
-            pila.push("A2");
-            pila.push("IDENTIFICADOR");
-            System.out.println("7\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.COMA && "A1".equals(pila.peek())){
-            pila.pop();
-            pila.push("A");
-            pila.push("COMA");
-            System.out.println("8\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.FROM && "A1".equals(pila.peek())){
-            pila.pop();
-            System.out.println("9\n");
-            chec=true;
-        }
-        
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "A2".equals(pila.peek())){
-            pila.pop();
-            pila.push("A3");
-            pila.push("IDENTIFICADOR");
-            System.out.println("10\n");
-            chec=true;
-        }
-        
-        if(preanalisis.tipo==TipoToken.PUNTO && "A3".equals(pila.peek())){
-            pila.pop();
-            pila.push("IDENTIFICADOR");
-            pila.push("PUNTO");
-            System.out.println("11\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.COMA && "A3".equals(pila.peek())){
-            pila.pop();
-            System.out.println("12\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.FROM && "A3".equals(pila.peek())){
-            pila.pop();
-            System.out.println("12.1\n");
-            chec=true;
-        }
-        /////////////////////////////
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "T".equals(pila.peek())){
-            pila.pop();
-            pila.push("T1");
-            pila.push("T2");
-            System.out.println("13\n");
-            chec=true;
-        }
-        
-        if(preanalisis.tipo==TipoToken.COMA && "T1".equals(pila.peek())){
-            pila.pop();
-            pila.push("T");
-            pila.push("COMA");
-            System.out.println("14\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.EOF && "T1".equals(pila.peek())){
-            pila.pop();
-            System.out.println("15\n");
-            chec=true;
-        }
-        
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "T2".equals(pila.peek())){
-            pila.pop();
-            pila.push("T3");
-            pila.push("IDENTIFICADOR");
-            System.out.println("16\n");
-            chec=true;
-        }
-        
-        if(preanalisis.tipo==TipoToken.IDENTIFICADOR && "T3".equals(pila.peek())){
-            pila.pop();
-            pila.push("IDENTIFICADOR");
-            System.out.println("17\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.COMA && "T3".equals(pila.peek())){
-            pila.pop();
-            System.out.println("18\n");
-            chec=true;
-        }
-        if(preanalisis.tipo==TipoToken.EOF && "T3".equals(pila.peek())){
-            pila.pop();
-            System.out.println("19\n");
-            chec=true;
+        switch(estado){
+            case 0:
+                if(preanalisis.tipo==TipoToken.SELECT){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("2");
+                    preanalisis=tokens.get(i);
+                    
+                }
+                break;
+            case 1:
+                if(preanalisis.tipo==TipoToken.EOF){
+                    acept=true;
+                }
+            break;
+            case 2:
+                if(preanalisis.tipo==TipoToken.DISTINCT){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("8");
+                    preanalisis=tokens.get(i);
+                }else if(preanalisis.tipo==TipoToken.ASTERISCO){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("11");
+                    preanalisis=tokens.get(i);
+                }else if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("14");
+                    preanalisis=tokens.get(i);
+                }else if("A".equals(simbolo.peek())){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("14");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 3:
+                if(preanalisis.tipo==TipoToken.FROM){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("4");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 4:
+                if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("14");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 5:
+                if(preanalisis.tipo==TipoToken.PUNTO){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("6");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 6:
+                if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("21");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 7:
+                pila.pop();
+                got(7);
+            break;
+            case 8:
+                if(preanalisis.tipo==TipoToken.ASTERISCO){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("11");
+                    preanalisis=tokens.get(i);
+                }else if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("14");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 9:
+                pila.pop();
+                got(2);
+            break;
+            case 10:
+                pila.pop();
+                got(3);
+            break;
+            case 11:
+                pila.pop();
+                got(4);
+            break;
+            case 12:
+                if(preanalisis.tipo==TipoToken.COMA){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("18");
+                    preanalisis=tokens.get(i);
+                }else{
+                    pila.pop();
+                    got(5);
+                }
+                
+            break;
+            case 13:
+                pila.pop();
+                got(7);
+            break;
+            case 14:
+                if(preanalisis.tipo==TipoToken.PUNTO){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("16");
+                    preanalisis=tokens.get(i);
+                }else{
+                    pila.pop();
+                    got(10);
+                }
+                
+            break;
+            case 15:
+                pila.pop();
+                got(8);
+            break;
+            case 16:
+                if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("17");
+                    preanalisis=tokens.get(i);
+                }else{
+                    pila.pop();
+                    got(10);
+                }
+            break;
+            case 17:
+                pila.pop();
+                got(9);
+            break;
+            case 18:
+                if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("14");
+                    preanalisis=tokens.get(i);
+                }
+            break;
+            case 19:
+                pila.pop();
+                got(6);
+            break;
+            case 20:
+                pila.pop();
+                got(12);
+            break;
+            case 21:
+                if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
+                    simbolo.push(preanalisis.tipo);
+                    pila.push("23");
+                    preanalisis=tokens.get(i);
+                }else{
+                    pila.pop();
+                    got(10);
+                }
+            break;
+            case 22:
+                pila.pop();
+                got(13);
+            break;
+            case 23:
+                pila.pop();
+                got(14);
+            break;
         }
 
     }
-
-    
-    
-
+    private void got(int i){
+        
+        
+        if("0".equals(pila.peek()))
+    }
 }
