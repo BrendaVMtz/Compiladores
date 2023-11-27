@@ -54,6 +54,10 @@ public class ASDR implements Parser{
             k++;
             
             pilaI();
+            for(int l=0;l<10; l++){
+            System.out.print(" "+gramatica[l]);
+            }
+            System.out.print("\n");
         }
         
     }
@@ -97,21 +101,22 @@ public class ASDR implements Parser{
                 
             break;
             case 3:
+                    j++;
                 if(preanalisis.tipo==TipoToken.FROM){
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("4");
                     i++;
-                    j++;
+                    
                     preanalisis=tokens.get(i);
                     
                 }
             break;
             case 4:
+                j++;
                 if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
                     gramatica[j]=""+preanalisis.tipo;
-                    pila.push("14");
+                    pila.push("21");
                     i++;
-                    j++;
                     preanalisis=tokens.get(i);
                 }
             break;
@@ -241,10 +246,12 @@ public class ASDR implements Parser{
 
     }
     private void got(){
-        
+
         if("IDENTIFICADOR".equals(gramatica[j]) && "PUNTO".equals(gramatica[j-1])){
             gramatica[j]="";
             gramatica[j-1]="A2";
+        }else if("T".equals(gramatica[j]) && "FROM".equals(gramatica[j-1]) && "D".equals(gramatica[j-2]) && "SELECT".equals(gramatica[j-3])){
+            gramatica[j]="Q";
         }else if("IDENTIFICADOR".equals(gramatica[j])){
             gramatica[j]="T2";
         }else if("T2".equals(gramatica[j]) && "IDENTIFICADOR".equals(gramatica[j-1])){
@@ -254,8 +261,7 @@ public class ASDR implements Parser{
             gramatica[j]="";
             gramatica[j-1]="";
             gramatica[j-2]="T";
-        }else if("T1".equals(gramatica[j]))
-        {
+        }else if("T1".equals(gramatica[j])){
             gramatica[j]="T";
         }else if("A2".equals(gramatica[j]) && "IDENTIFICADOR".equals(gramatica[j-1])){
             gramatica[j]="";
@@ -276,12 +282,13 @@ public class ASDR implements Parser{
         }else if("P".equals(gramatica[j])){
             gramatica[j]="D";
         }
-        else if("T".equals(gramatica[j]) && "FROM".equals(gramatica[j]) && "D".equals(gramatica[j]) && "SELECT".equals(gramatica[j])){
-            gramatica[j]="Q";
-        }
         
         if("0".equals(pila.peek()) && "Q".equals(gramatica[j])){
             pila.push("1");
+        }else if("2".equals(pila.peek()) && "P".equals(gramatica[j])){
+            pila.push("10");
+        }else if("2".equals(pila.peek()) && "D".equals(gramatica[j])){
+            pila.push("3");
         }else if("2".equals(pila.peek()) && "A".equals(gramatica[j])){
             pila.push("12");
         }else if("2".equals(pila.peek()) && "A1".equals(gramatica[j])){
