@@ -15,12 +15,15 @@ import java.util.Stack;
 
 public class ASDR implements Parser{
     private int i = 0;
+    private int j = 0;
+    private int k = 0;
     boolean chec=false;
     private boolean hayErrores = false;
     private boolean acept = false;
     private Token preanalisis;
     private final List<Token> tokens;
     int estado =0;
+    String[] gramatica = new String[10];
     
     Stack<String> pila = new Stack<>();
     Stack simbolo = new Stack<>();
@@ -33,7 +36,7 @@ public class ASDR implements Parser{
     public boolean parse() {
         pila.push("0");
         comprobacion();
-        if(preanalisis.tipo == TipoToken.EOF & pila.peek().equals("$")){
+        if(preanalisis.tipo == TipoToken.EOF){
             System.out.println("Consulta correcta");
             
             return  true;
@@ -47,6 +50,9 @@ public class ASDR implements Parser{
         
         while(acept!=true){
             estado=Integer.parseInt(pila.peek());
+            System.out.print(""+preanalisis.tipo+" "+pila.peek()+" "+gramatica[j]+"\n");
+            k++;
+            
             pilaI();
         }
         
@@ -57,8 +63,10 @@ public class ASDR implements Parser{
         switch(estado){
             case 0:
                 if(preanalisis.tipo==TipoToken.SELECT){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("2");
+                    i++;
+                    
                     preanalisis=tokens.get(i);
                     
                 }
@@ -69,162 +77,237 @@ public class ASDR implements Parser{
                 }
             break;
             case 2:
+                j++;
                 if(preanalisis.tipo==TipoToken.DISTINCT){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("8");
+                    i++;
                     preanalisis=tokens.get(i);
                 }else if(preanalisis.tipo==TipoToken.ASTERISCO){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("11");
+                    i++;
                     preanalisis=tokens.get(i);
                 }else if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("14");
-                    preanalisis=tokens.get(i);
-                }else if("A".equals(simbolo.peek())){
-                    simbolo.push(preanalisis.tipo);
-                    pila.push("14");
+                    i++;
                     preanalisis=tokens.get(i);
                 }
+                
             break;
             case 3:
                 if(preanalisis.tipo==TipoToken.FROM){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("4");
+                    i++;
+                    j++;
                     preanalisis=tokens.get(i);
+                    
                 }
             break;
             case 4:
                 if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("14");
+                    i++;
+                    j++;
                     preanalisis=tokens.get(i);
                 }
             break;
             case 5:
                 if(preanalisis.tipo==TipoToken.PUNTO){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("6");
+                    i++;
+                    j++;
                     preanalisis=tokens.get(i);
                 }
             break;
             case 6:
                 if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("21");
+                    i++;
+                    j++;
                     preanalisis=tokens.get(i);
                 }
             break;
             case 7:
                 pila.pop();
-                got(7);
+                got();
             break;
             case 8:
                 if(preanalisis.tipo==TipoToken.ASTERISCO){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("11");
                     preanalisis=tokens.get(i);
                 }else if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("14");
                     preanalisis=tokens.get(i);
                 }
             break;
             case 9:
                 pila.pop();
-                got(2);
+                got();
             break;
             case 10:
                 pila.pop();
-                got(3);
+                got();
             break;
             case 11:
                 pila.pop();
-                got(4);
+                got();
             break;
             case 12:
                 if(preanalisis.tipo==TipoToken.COMA){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("18");
                     preanalisis=tokens.get(i);
                 }else{
                     pila.pop();
-                    got(5);
+                    got();
                 }
                 
             break;
             case 13:
                 pila.pop();
-                got(7);
+                got();
             break;
             case 14:
                 if(preanalisis.tipo==TipoToken.PUNTO){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("16");
                     preanalisis=tokens.get(i);
                 }else{
                     pila.pop();
-                    got(10);
+                    got();
                 }
                 
             break;
             case 15:
                 pila.pop();
-                got(8);
+                got();
             break;
             case 16:
                 if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("17");
                     preanalisis=tokens.get(i);
                 }else{
                     pila.pop();
-                    got(10);
+                    got();
                 }
             break;
             case 17:
                 pila.pop();
-                got(9);
+                got();
             break;
             case 18:
                 if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("14");
                     preanalisis=tokens.get(i);
                 }
             break;
             case 19:
                 pila.pop();
-                got(6);
+                got();
             break;
             case 20:
                 pila.pop();
-                got(12);
+                got();
             break;
             case 21:
                 if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
-                    simbolo.push(preanalisis.tipo);
+                    gramatica[j]=""+preanalisis.tipo;
                     pila.push("23");
                     preanalisis=tokens.get(i);
                 }else{
                     pila.pop();
-                    got(10);
+                    got();
                 }
             break;
             case 22:
                 pila.pop();
-                got(13);
+                got();
             break;
             case 23:
                 pila.pop();
-                got(14);
+                got();
             break;
         }
 
     }
-    private void got(int i){
+    private void got(){
+        
+        if("IDENTIFICADOR".equals(gramatica[j]) && "PUNTO".equals(gramatica[j-1])){
+            gramatica[j]="";
+            gramatica[j-1]="A2";
+        }else if("IDENTIFICADOR".equals(gramatica[j])){
+            gramatica[j]="T2";
+        }else if("T2".equals(gramatica[j]) && "IDENTIFICADOR".equals(gramatica[j-1])){
+            gramatica[j]="";
+            gramatica[j-1]="T1";
+        }else if("T1".equals(gramatica[j]) && "COMA".equals(gramatica[j-1]) && "T".equals(gramatica[j-2])){
+            gramatica[j]="";
+            gramatica[j-1]="";
+            gramatica[j-2]="T";
+        }else if("T1".equals(gramatica[j]))
+        {
+            gramatica[j]="T";
+        }else if("A2".equals(gramatica[j]) && "IDENTIFICADOR".equals(gramatica[j-1])){
+            gramatica[j]="";
+            gramatica[j-1]="A1";
+        }else if("A1".equals(gramatica[j]) && "COMA".equals(gramatica[j-1]) && "A".equals(gramatica[j-2])){
+            gramatica[j]="";
+            gramatica[j-1]="";
+            gramatica[j-2]="A";
+        }else if("A1".equals(gramatica[j])){
+            gramatica[j]="A";
+        }else if("A".equals(gramatica[j])){
+            gramatica[j]="P";
+        }else if("ASTERISCO".equals(gramatica[j])){
+            gramatica[j]="P";
+        }else if("P".equals(gramatica[j]) && "DISTINCT".equals(gramatica[j-1])){
+            gramatica[j]="";
+            gramatica[j-1]="D";
+        }else if("P".equals(gramatica[j])){
+            gramatica[j]="D";
+        }
+        else if("T".equals(gramatica[j]) && "FROM".equals(gramatica[j]) && "D".equals(gramatica[j]) && "SELECT".equals(gramatica[j])){
+            gramatica[j]="Q";
+        }
+        
+        if("0".equals(pila.peek()) && "Q".equals(gramatica[j])){
+            pila.push("1");
+        }else if("2".equals(pila.peek()) && "A".equals(gramatica[j])){
+            pila.push("12");
+        }else if("2".equals(pila.peek()) && "A1".equals(gramatica[j])){
+            pila.push("13");
+        }else if("2".equals(pila.peek()) && "A2".equals(gramatica[j])){
+            pila.push("14");
+        }else if("4".equals(pila.peek()) && "T".equals(gramatica[j])){
+            pila.push("5");
+        }else if("4".equals(pila.peek()) && "T1".equals(gramatica[j])){
+            pila.push("28");
+        }else if("6".equals(pila.peek()) && "T1".equals(gramatica[j])){
+            pila.push("7");
+        }else if("8".equals(pila.peek()) && "P".equals(gramatica[j])){
+            pila.push("9");
+        }else if("8".equals(pila.peek()) && "A".equals(gramatica[j])){
+            pila.push("12");
+        }else if("8".equals(pila.peek()) && "A1".equals(gramatica[j])){
+            pila.push("13");
+        }else if("14".equals(pila.peek()) && "A2".equals(gramatica[j])){
+            pila.push("15");
+        }else if("18".equals(pila.peek()) && "A1".equals(gramatica[j])){
+            pila.push("19");
+        }else if("21".equals(pila.peek()) && "T2".equals(gramatica[j])){
+            pila.push("22");
+        }
         
         
-        if("0".equals(pila.peek()))
     }
 }
