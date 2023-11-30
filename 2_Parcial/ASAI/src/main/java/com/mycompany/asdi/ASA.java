@@ -13,11 +13,11 @@ package com.mycompany.asdi;
 import java.util.List;
 import java.util.Stack;
 
-public class ASDR implements Parser{
+public class ASA implements Parser{
     private int i = 0;
     private int j = 0;
     private int k = 0;
-    boolean chec=false;
+    boolean check=false;
     private boolean hayErrores = false;
     private boolean acept = false;
     private Token preanalisis;
@@ -27,7 +27,7 @@ public class ASDR implements Parser{
     
     Stack<String> pila = new Stack<>();
     Stack simbolo = new Stack<>();
-        public ASDR(List<Token> tokens){
+        public ASA(List<Token> tokens){
         this.tokens = tokens;
         preanalisis = this.tokens.get(i);
     }
@@ -52,12 +52,12 @@ public class ASDR implements Parser{
             estado=Integer.parseInt(pila.peek());
             System.out.print(""+preanalisis.tipo+" "+pila.peek()+" "+gramatica[j]+"\n");
             k++;
-            chec=false;
+            check=false;
             pilaI();
             for(int l=0;l<10; l++){
             System.out.print(" "+gramatica[l]);
             }
-            if(!chec){
+            if(!check){
                 break;
             }
             
@@ -75,7 +75,7 @@ public class ASDR implements Parser{
                     pila.push("4");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }
                 break;
             case 2:
@@ -90,21 +90,21 @@ public class ASDR implements Parser{
                     pila.push("15");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else if(preanalisis.tipo==TipoToken.ASTERISCO){
                     j++;
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("17");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
                     j++;
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("21");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }
             break;
             case 5:
@@ -114,7 +114,7 @@ public class ASDR implements Parser{
                     pila.push("6");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }
             break;
             case 6:
@@ -124,7 +124,7 @@ public class ASDR implements Parser{
                     pila.push("10");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else{
                     pila.pop();
                     got();
@@ -137,7 +137,7 @@ public class ASDR implements Parser{
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("8");
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else{
                     pila.pop();
                     got();
@@ -150,7 +150,7 @@ public class ASDR implements Parser{
                     pila.push("10");
                     i++;
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }
             break;
             case 9:
@@ -163,7 +163,7 @@ public class ASDR implements Parser{
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("12");
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }if(preanalisis.tipo==TipoToken.EOF){
                     j++;
                     gramatica[j]="T2";
@@ -194,14 +194,14 @@ public class ASDR implements Parser{
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("17");
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else if(preanalisis.tipo==TipoToken.IDENTIFICADOR){
                     i++;
                     j++;
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("21");
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else{
                     pila.pop();
                     got();
@@ -223,7 +223,7 @@ public class ASDR implements Parser{
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("19");
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else{
                     pila.pop();
                     got();
@@ -237,7 +237,7 @@ public class ASDR implements Parser{
                     gramatica[j]=""+preanalisis.tipo;
                     pila.push("21");
                     preanalisis=tokens.get(i);
-                    chec=true;
+                    check=true;
                 }else{
                     pila.pop();
                     got();
@@ -261,7 +261,7 @@ public class ASDR implements Parser{
                         gramatica[j]=""+preanalisis.tipo;
                         pila.push("23");
                         preanalisis=tokens.get(i);
-                        chec=true;
+                        check=true;
                     }
                 }else{
                     pila.pop();
@@ -297,58 +297,58 @@ public class ASDR implements Parser{
             gramatica[j]="";
             gramatica[j-1]="A2";
             j--;
-            chec=true;
+            check=true;
         }else if("T".equals(gramatica[j]) && "FROM".equals(gramatica[j-1]) && "D".equals(gramatica[j-2]) && "SELECT".equals(gramatica[j-3])){
             gramatica[j]="Q";
-            chec=true;
+            check=true;
         }else if("IDENTIFICADOR".equals(gramatica[j])){
             gramatica[j]="T2";
-            chec=true;
+            check=true;
         }else if("T2".equals(gramatica[j]) && "IDENTIFICADOR".equals(gramatica[j-1])){
             gramatica[j]="";
             gramatica[j-1]="T1";
             j--;
-            chec=true;
+            check=true;
         }else if("T1".equals(gramatica[j]) && "COMA".equals(gramatica[j-1]) && "T".equals(gramatica[j-2])){
             gramatica[j]="";
             gramatica[j-1]="";
             gramatica[j-2]="T";
-            chec=true;
+            check=true;
         }else if("T1".equals(gramatica[j])){
             gramatica[j]="T";
-            chec=true;
+            check=true;
         }else if("A2".equals(gramatica[j]) && "IDENTIFICADOR".equals(gramatica[j-1])){
             gramatica[j]="";
             j--;
             gramatica[j]="A1";
-            chec=true;
+            check=true;
         }else if("A1".equals(gramatica[j]) && "COMA".equals(gramatica[j-1]) && "A".equals(gramatica[j-2])){
             gramatica[j]="";
             gramatica[j-1]="";
             gramatica[j-2]="A";
             j--;
             j--;
-            chec=true;
+            check=true;
         }else if("A1".equals(gramatica[j])){
             gramatica[j]="A";
-            chec=true;
+            check=true;
         }else if("A".equals(gramatica[j])){
             gramatica[j]="P";
-            chec=true;
+            check=true;
         }else if("ASTERISCO".equals(gramatica[j])){
             gramatica[j]="P";
-            chec=true;
+            check=true;
         }else if("P".equals(gramatica[j]) && "DISTINCT".equals(gramatica[j-1])){
             gramatica[j]="";
             gramatica[j-1]="D";
             j--;
-            chec=true;
+            check=true;
         }else if("P".equals(gramatica[j])){
             gramatica[j]="D";
-            chec=true;
+            check=true;
         }else if("EOF".equals(gramatica[j])){
             gramatica[j]="T2";
-            chec=true;
+            check=true;
         }
         tablago();
           
@@ -357,49 +357,49 @@ public class ASDR implements Parser{
         if(!pila.isEmpty()){
             if("1".equals(pila.peek()) && "Q".equals(gramatica[j])){
                 pila.push("2");
-                chec=true;
+                check=true;
             }else if("4".equals(pila.peek()) && "P".equals(gramatica[j])){
                 pila.push("26");
-                chec=true;
+                check=true;
             }else if("4".equals(pila.peek()) && "D".equals(gramatica[j])){
                 pila.push("5");
-                chec=true;
+                check=true;
             }else if("4".equals(pila.peek()) && "A".equals(gramatica[j])){
                 pila.push("18");
-                chec=true;
+                check=true;
             }else if("4".equals(pila.peek()) && "A1".equals(gramatica[j])){
                 pila.push("25");
-                chec=true;
+                check=true;
             }else if("6".equals(pila.peek()) && "T".equals(gramatica[j])){
                 pila.push("7");
-                chec=true;
+                check=true;
             }else if("6".equals(pila.peek()) && "T1".equals(gramatica[j])){
                 pila.push("14");
-                chec=true;
+                check=true;
             }else if("8".equals(pila.peek()) && "T1".equals(gramatica[j])){
                 pila.push("9");
-                chec=true;
+                check=true;
             }else if("10".equals(pila.peek()) && "T2".equals(gramatica[j])){
                 pila.push("11");///
-                chec=true;
+                check=true;
             }else if("8".equals(pila.peek()) && "P".equals(gramatica[j])){
                 pila.push("9");
-                chec=true;
+                check=true;
             }else if("8".equals(pila.peek()) && "A".equals(gramatica[j])){
                 pila.push("12");
-                chec=true;
+                check=true;
             }else if("8".equals(pila.peek()) && "A1".equals(gramatica[j])){
                 pila.push("13");
-                chec=true;
+                check=true;
             }else if("14".equals(pila.peek()) && "A2".equals(gramatica[j])){
                 pila.push("15");
-                chec=true;
+                check=true;
             }else if("18".equals(pila.peek()) && "A1".equals(gramatica[j])){
                 pila.push("19");
-                chec=true;
+                check=true;
             }else if("21".equals(pila.peek()) && "A2".equals(gramatica[j])){
                 pila.push("22");
-                chec=true;
+                check=true;
             }else{
                 pila.pop();
                 tablago();

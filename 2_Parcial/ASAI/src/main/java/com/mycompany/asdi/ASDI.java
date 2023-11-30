@@ -38,7 +38,7 @@ public class ASDI {
             System.out.println(token);
         }*/
 
-        Parser parser = new ASDR(tokens);
+        Parser parser = new ASA(tokens);
         parser.parse();
     }
 
