@@ -19,11 +19,28 @@ public class Parser {
         this.tokens = tokens;
         preanalisis = this.tokens.get(i);
     }
-    private void Declaration(List<Token> tokens){
-        
+    
+    public boolean analisis(){
+        Declaration();
+        if(preanalisis.tipo == TipoToken.EOF){
+            System.out.println("Consulta correcta");
+            
+            return  true;
+        }else {
+            System.out.println("Se encontraron errores");
+        }
+        return false;
+    }
+    
+    void Declaration(){
+        switch(preanalisis.tipo){
+            case FUN:
+                match(TipoToken.FUN);
+                Function();
+        }
     }
 
-    private void term(){
+    void term(){
         factor();
         term2();
     }

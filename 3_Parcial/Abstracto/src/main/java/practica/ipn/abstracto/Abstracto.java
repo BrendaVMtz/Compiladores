@@ -69,7 +69,7 @@ public class Abstracto {
             }*/
             
             Parser parse = new Parser(tokens);
-            Parser.analisis();
+            parse.analisis();
         }
         catch (Exception ex){
             ex.printStackTrace();
