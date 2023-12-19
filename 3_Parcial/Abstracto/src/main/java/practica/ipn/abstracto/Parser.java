@@ -6,12 +6,15 @@ package practica.ipn.abstracto;
 import practica.ipn.abstracto.TipoToken;
 import practica.ipn.abstracto.Token;
 import java.util.List;
+import static practica.ipn.abstracto.TipoToken.IDENTIFIER;
 
 /**
  *
  * @author karel
  */
 public class Parser {
+    private final List<String> generic = null;
+    private final List<Expression> generic2 = null;
     private final List<Token> tokens;
     private int i = 0;
     private Token preanalisis;
@@ -24,7 +27,6 @@ public class Parser {
         Declaration();
         if(preanalisis.tipo == TipoToken.EOF){
             System.out.println("Consulta correcta");
-            
             return  true;
         }else {
             System.out.println("Se encontraron errores");
@@ -37,9 +39,46 @@ public class Parser {
             case FUN:
                 match(TipoToken.FUN);
                 Function();
+            break;
+            case VAR:
+                match(TipoToken.VAR);
+                match(TipoToken.IDENTIFIER);
+                VAR_INT();
+            break;
+            case EOF:
+            break;
         }
     }
-
+    
+    void Function(){
+        match(TipoToken.IDENTIFIER);
+        match(TipoToken.LEFT_PAREN);
+        List<String> lstParameters = Parameters();
+        match(TipoToken.RIGHT_PAREN);
+        Block();
+    }
+    
+    private List<String> Parameters(){
+        switch(preanalisis.tipo){
+            case IDENTIFIER:
+                generic.add(""+preanalisis.lexema);
+                match(TipoToken.IDENTIFIER);
+                Parameters();
+            break;
+            case COMMA:
+                generic.add(""+preanalisis.lexema);
+                match(TipoToken.COMMA);
+                generic.add(""+preanalisis.lexema);
+                match(TipoToken.IDENTIFIER);
+                Parameters();
+            break;
+            case RIGHT_PAREN:
+            break;
+        }
+        
+        return generic;
+    }
+    
     void term(){
         factor();
         term2();
@@ -152,7 +191,10 @@ public class Parser {
         }
     }
 
-
+    private List<Expression> argumentsOptional(){
+        As();
+        return generic2;
+    }
     private Token previous() {
         return this.tokens.get(i - 1);
     }
