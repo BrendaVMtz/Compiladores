@@ -7,8 +7,13 @@ import java.util.Arrays;
 import practica.ipn.abstracto.TipoToken;
 import practica.ipn.abstracto.Token;
 import java.util.List;
+import static practica.ipn.abstracto.TipoToken.BANG;
+import static practica.ipn.abstracto.TipoToken.EOF;
+import static practica.ipn.abstracto.TipoToken.EQUAL;
 import static practica.ipn.abstracto.TipoToken.FOR;
+import static practica.ipn.abstracto.TipoToken.GREATER;
 import static practica.ipn.abstracto.TipoToken.IDENTIFIER;
+import static practica.ipn.abstracto.TipoToken.LESS;
 import static practica.ipn.abstracto.TipoToken.OR;
 import static practica.ipn.abstracto.TipoToken.SEMICOLON;
 import static practica.ipn.abstracto.TipoToken.VAR;
@@ -30,7 +35,7 @@ public class Parser {
     public boolean analisis(){
         List<Statement> lstStmt= null;
         System.out.print("a");
-        Declaration(lstStmt);
+        lstStmt = Declaration(lstStmt);
         if(preanalisis.tipo == TipoToken.EOF){
             System.out.println("Consulta correcta");
             return  true;
@@ -44,21 +49,77 @@ public class Parser {
         switch(preanalisis.tipo){
             case FUN:
                 match(TipoToken.FUN);
-                lstStmt.add(fun_dec());
-                lstStmt = Declaration(lstStmt);
-            
+                List<Statement> lst = Arrays.asList(fun_dec());
+                lst = Declaration(lst);
+            return lst;
             case VAR:
                 match(TipoToken.VAR);
-                lstStmt.add(var_dec());
-                lstStmt = Declaration(lstStmt);
-            case EOF:
-                match(TipoToken.EOF);
-            break;
+                List<Statement> lst2 = Arrays.asList(var_dec());
+                lst2 = Declaration(lst2);
+            return lst2;
+            case BANG:
+                List <Statement> lst3 = Arrays.asList(Statement());
+                lst3 = Declaration(lst3);
+            return lst3;
+            case MINUS:
+                List <Statement> lst4 = Arrays.asList(Statement());
+                lst4 = Declaration(lst4);
+            return lst4;
+            case TRUE:
+                List <Statement> lst5 = Arrays.asList(Statement());
+                lst5= Declaration(lst5);
+            return lst5;
+            case FALSE:
+                List <Statement> lst6 = Arrays.asList(Statement());
+                lst6 = Declaration(lst6);
+            return lst6;
+            case NULL:
+                List <Statement> lst7 = Arrays.asList(Statement());
+                lst7 = Declaration(lst7);
+            return lst7;
+            case NUMBER:
+                List <Statement> lst8 = Arrays.asList(Statement());
+                lst8 = Declaration(lst8);
+            return lst8;
+            case STRING:
+                List <Statement> lst9 = Arrays.asList(Statement());
+                lst9 = Declaration(lst9);
+            return lst9;
+            case IDENTIFIER:
+                List <Statement> lst10 = Arrays.asList(Statement());
+                lst10 = Declaration(lst10);
+            return lst10;
+            case LEFT_PAREN:
+                List <Statement> lst11 = Arrays.asList(Statement());
+                lst11 = Declaration(lst11);
+            return lst11;
+            case FOR:
+                List <Statement> lst12 = Arrays.asList(Statement());
+                lst12 = Declaration(lst12);
+            return lst12;
+            case IF:
+                List <Statement> lst13 = Arrays.asList(Statement());
+                lst13 = Declaration(lst13);
+            return lst13;
+            case PRINT:
+                List <Statement> lst14 = Arrays.asList(Statement());
+                lst14 = Declaration(lst14);
+            return lst14;
+            case RETURN:
+                List <Statement> lst15 = Arrays.asList(Statement());
+                lst15 = Declaration(lst15);
+            return lst15;
+            case WHILE:
+                List <Statement> lst16 = Arrays.asList(Statement());
+                lst16 = Declaration(lst16);
+            return lst16;
+            case LEFT_BRACE:
+                List <Statement> lst17 = Arrays.asList(Statement());
+                lst17 = Declaration(lst17);
+            return lst17;
             default:
-                Statement();
-            break;
+                return null;
         }
-        return lstStmt;
     }
     
     private Statement fun_dec(){
@@ -96,23 +157,28 @@ public class Parser {
                     return st2;
                     case PRINT:
                         match(TipoToken.PRINT);
-                        expression();
-                        match(TipoToken.SEMICOLON);
-                    break;
+                        Statement st3 = Print();
+                    return st3;
                     case RETURN:
                         match(TipoToken.RETURN);
-                        Expression ex = expression();
-                        match(TipoToken.EOF);
-                    break;
+                        Statement st4 = Return();
+                    return st4;
                     case WHILE:
                         match(TipoToken.WHILE);
                         match(TipoToken.LEFT_PAREN);
-                        expression();
-                        match(TipoToken.RIGHT_PAREN);
-                        Statement();
-                    break;
+                        Statement st5 = While();
+                    return st5;
+                    default:
+                        StmtBlock st6 = Block();
+                    return st6;
                 }
-        return null;
+    }
+    
+    private Statement expr_stmt(){
+        Expression ex = expression();
+        match(TipoToken.SEMICOLON);
+        StmtExpression st = new StmtExpression(ex);
+        return st;
     }
     
     private Statement For(){
@@ -183,21 +249,23 @@ public class Parser {
         return null;
     }
     
-    private Statement expr_stmt(){
+    private Statement Print(){
         Expression ex = expression();
         match(TipoToken.SEMICOLON);
-        StmtExpression st = new StmtExpression(ex);
-        return st;
+        return new StmtPrint(ex);
     }
     
-    private Statement Function(){
-        match(TipoToken.IDENTIFIER);
-        Token tipo = previous();
-        match(TipoToken.LEFT_PAREN);
-        List<Token> lstParameters = Parameters();
+    private Statement Return(){
+        Expression ex = expression();
+        match(TipoToken.SEMICOLON);
+        return new StmtReturn(ex);
+    }
+    
+    private Statement While(){
+        Expression ex = expression();
         match(TipoToken.RIGHT_PAREN);
-        StmtBlock stmt = Block();
-        return new StmtFunction(tipo, lstParameters, stmt);
+        Statement st = Statement();
+        return new StmtLoop(ex, st);
     }
     
     private StmtBlock Block(){
@@ -206,33 +274,6 @@ public class Parser {
         Lst =(List<Statement>) Declaration(Lst);
         match(TipoToken.RIGHT_BRACE);
         return new StmtBlock(Lst);
-    }
-    
-    private List<Token> Parameters(){
-        switch(preanalisis.tipo){
-            case IDENTIFIER:
-                Token id = tokens.get(i);
-                match(TipoToken.IDENTIFIER);
-                List <Token> lst = (List<Token>) id;
-                lst = Parameters_2(lst);
-                Parameters();
-            break;
-            default:
-                break;
-        }        
-        return null;
-    }
-    
-    private List<Token> Parameters_2(List<Token> lst){
-        if(preanalisis.tipo == TipoToken.COMMA){
-            match(TipoToken.COMMA);
-            Token tipo = tokens.get(i);
-            match(TipoToken.IDENTIFIER);
-            lst.add(tipo);
-            lst = Parameters_2(lst);
-            return lst;
-        }
-        return lst;
     }
     
     private Expression expression(){
@@ -245,6 +286,19 @@ public class Parser {
         return exp;
     }
     
+    private Expression assignment_op(Expression exp){
+        switch(preanalisis.tipo){
+            case EQUAL:
+                Token tipo = tokens.get(i);
+                match(TipoToken.EQUAL);
+                Expression aux = expression();
+                ExprAssign ex = new ExprAssign(tipo, aux);
+                return ex;
+            default:
+                return exp;
+        }        
+    }
+    
     private Expression logic_or(){
         Expression exp = logic_and();
         exp = logic_or2(exp);
@@ -255,7 +309,8 @@ public class Parser {
         switch(preanalisis.tipo){
             case OR:
                 match(TipoToken.OR);
-                Expression ex = logic_or();
+                Expression ex = logic_and();
+                ex = logic_or2(ex);
                 return ex;
             default:
                 return expr;
@@ -272,7 +327,8 @@ public class Parser {
         switch(preanalisis.tipo){
             case AND:
                 match(TipoToken.AND);
-                Expression ex = logic_and();
+                Expression ex = Equaly();
+                ex = logic_and2(ex);
                 return ex;
             default:
                 return expr;
@@ -291,12 +347,14 @@ public class Parser {
                 Token tipo = tokens.get(i);
                 match(TipoToken.BANG_EQUAL);
                 Expression exp = comparison();
+                exp = Equaly2(exp);
                 Expression exB = new ExprBinary(ex, tipo, exp);
             return Equaly2(exB);
             case EQUAL_EQUAL:    
                 Token tipo2 = tokens.get(i);
                 match(TipoToken.BANG_EQUAL);
                 Expression exp2 = comparison();
+                exp2 = Equaly2(exp2);
                 Expression exB2 = new ExprBinary(ex, tipo2, exp2);
             return Equaly2(exB2);
         }
@@ -305,7 +363,34 @@ public class Parser {
     
     private Expression comparison(){
         Expression exp = Term();
+        exp = Comparison_2(exp);
         return exp;
+    }
+    
+    private Expression Comparison_2(Expression ex){
+        switch(preanalisis.tipo){
+            case GREATER:
+                match(TipoToken.GREATER);
+                Expression exp = Term();
+                exp = Comparison_2(exp);
+            return exp;
+            case GREATER_EQUAL:    
+                match(TipoToken.GREATER_EQUAL);
+                Expression exp2 = Term();
+                exp2 = Comparison_2(exp2);
+            return exp2;
+            case LESS:
+                match(TipoToken.LESS);
+                Expression exp3 = Term();
+                exp3 = Comparison_2(exp3);
+            return exp3;
+            case LESS_EQUAL:
+                match(TipoToken.LESS_EQUAL);
+                Expression exp4 = Term();
+                exp4 = Comparison_2(exp4);
+            return exp4;
+        }
+        return ex;
     }
     
     private Expression Term(){
@@ -332,27 +417,6 @@ public class Parser {
         }
     }
     
-    
-    private Expression assignment_op(Expression exp){
-        switch(preanalisis.tipo){
-            case EQUAL:
-                Token tipo = tokens.get(i);
-                match(TipoToken.EQUAL);
-                Expression aux = expression();
-                ExprAssign ex = new ExprAssign(tipo, aux);
-                return ex;
-            default:
-                return exp;
-        }        
-    }
-    
-    private Expression term(){
-        Expression exp = Factor();
-        exp = Term2(exp);
-        return exp;
-    }
-    
-
     private Expression Factor(){
         Expression expr = unary();
         expr = factor2(expr);
@@ -424,13 +488,13 @@ public class Parser {
                 match(TipoToken.NULL);
                 return new ExprLiteral(null);
             case NUMBER:
+                Token numero = tokens.get(i);
                 match(TipoToken.NUMBER);
-                Token numero = previous();
-                return new ExprLiteral(numero.lexema);
+                return new ExprLiteral(numero.tipo);
             case STRING:
                 match(TipoToken.STRING);
                 Token cadena = previous();
-                return new ExprLiteral(cadena.lexema);
+                return new ExprLiteral(cadena.tipo);
             case IDENTIFIER:
                 match(TipoToken.IDENTIFIER);
                 Token id = previous();
@@ -444,19 +508,45 @@ public class Parser {
         }
         return null;
     }
-
-
-    private void match(TipoToken tt){
-        if(preanalisis.tipo ==  tt){
-            i++;
-            preanalisis = tokens.get(i);
+    
+    private Statement Function(){
+        match(TipoToken.IDENTIFIER);
+        Token tipo = previous();
+        match(TipoToken.LEFT_PAREN);
+        List<Token> lstParameters = Parameters();
+        match(TipoToken.RIGHT_PAREN);
+        StmtBlock stmt = Block();
+        return new StmtFunction(tipo, lstParameters, stmt);
+    }
+    
+    private List<Token> Parameters(){
+        List<Token> lst = Parameters1();
+        return lst;
+    }
+    
+    private List<Token> Parameters1(){
+        switch(preanalisis.tipo){
+            case IDENTIFIER:
+                Token id = tokens.get(i);
+                match(TipoToken.IDENTIFIER);
+                List <Token> lst = (List<Token>) id;
+                lst = Parameters_2(lst);
+                Parameters();
+            return lst;
+        }        
+        return null;
+    }
+    
+    private List<Token> Parameters_2(List<Token> lst){
+        if(preanalisis.tipo == TipoToken.COMMA){
+            match(TipoToken.COMMA);
+            Token tipo = tokens.get(i);
+            match(TipoToken.IDENTIFIER);
+            lst.add(tipo);
+            lst = Parameters_2(lst);
+            return lst;
         }
-        else{
-            String message = "Error en la línea " +
-                    preanalisis.posicion +
-                    ". Se esperaba " + preanalisis.tipo +
-                    " pero se encontró " + tt;
-        }
+        return lst;
     }
 
     private List<Expression> argumentsOptional(){
@@ -475,6 +565,20 @@ public class Parser {
             return ar;
         }
         return ar;
+    }
+    
+    private void match(TipoToken tt){
+        if(preanalisis.tipo ==  tt){
+            System.out.print("\n"+preanalisis.tipo);
+            i++; 
+            preanalisis = tokens.get(i);
+        }
+        else{
+            String message =" Se esperaba " + preanalisis.tipo +
+                    " pero se encontró " + tt;
+            
+            
+        }
     }
     
     private Token previous() {
