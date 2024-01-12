@@ -4,9 +4,9 @@
  */
 package practica.ipn.abstracto;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.AbstractList;
 import practica.ipn.abstracto.TipoToken;
 import practica.ipn.abstracto.Token;
 import java.util.List;
@@ -26,7 +26,6 @@ import static practica.ipn.abstracto.TipoToken.MINUS;
 import static practica.ipn.abstracto.TipoToken.NULL;
 import static practica.ipn.abstracto.TipoToken.NUMBER;
 import static practica.ipn.abstracto.TipoToken.OR;
-import static practica.ipn.abstracto.TipoToken.PRINT;
 import static practica.ipn.abstracto.TipoToken.RETURN;
 import static practica.ipn.abstracto.TipoToken.SEMICOLON;
 import static practica.ipn.abstracto.TipoToken.STRING;
@@ -49,9 +48,8 @@ public class Parser {
     }
     
     public boolean analisis(){
-        List<Statement> lstStmt = null;
+        List<Statement> lstStmt = Declaration();
         System.out.println(lstStmt);
-        lstStmt = Declaration();
         if(preanalisis.tipo == TipoToken.EOF){
             System.out.println("Consulta correcta");
             System.out.println(lstStmt);
@@ -357,32 +355,23 @@ public class Parser {
     private Expression Comparison_2(Expression ex){
         switch(preanalisis.tipo){
             case GREATER:
-                Token op = tokens.get(i);
                 match(TipoToken.GREATER);
                 Expression exp = Term();
-                exp = new ExprBinary(ex, op, exp);
                 exp = Comparison_2(exp);
-                
             return exp;
-            case GREATER_EQUAL:   
-                Token op1 = tokens.get(i);
+            case GREATER_EQUAL:    
                 match(TipoToken.GREATER_EQUAL);
                 Expression exp2 = Term();
-                exp2 = new ExprBinary(ex, op1, exp2);
                 exp2 = Comparison_2(exp2);
             return exp2;
             case LESS:
-                Token op2 = tokens.get(i);
                 match(TipoToken.LESS);
                 Expression exp3 = Term();
-                exp3 = new ExprBinary(ex, op2, exp3);
                 exp3 = Comparison_2(exp3);
             return exp3;
             case LESS_EQUAL:
-                Token op3 = tokens.get(i);
                 match(TipoToken.LESS_EQUAL);
                 Expression exp4 = Term();
-                exp4 = new ExprBinary(ex, op3, exp4);
                 exp4 = Comparison_2(exp4);
             return exp4;
         }
@@ -399,22 +388,21 @@ public class Parser {
         Expression ex;
         switch(preanalisis.tipo){
             case MINUS:
+                Token op = tokens.get(i);
                 match(TipoToken.MINUS);
-                Token operador = previous();
                 ex = Factor();
-                ex = new ExprBinary(exp, operador, ex );
+                ex = new ExprBinary(exp, op, ex);
                 ex = Term2(ex);
             return ex;
             case PLUS:
-                Token op = tokens.get(i);
+                Token op2 = tokens.get(i);
                 match(TipoToken.PLUS);
                 ex = Factor();
-                ex = new ExprBinary(exp, op, ex );
+                ex = new ExprBinary(exp, op2, ex);
                 ex = Term2(ex);
             return ex;
             default:
-                Token op1 = tokens.get(i);
-                return new ExprBinary(exp, op1, exp);
+                return exp;
         }
     }
     

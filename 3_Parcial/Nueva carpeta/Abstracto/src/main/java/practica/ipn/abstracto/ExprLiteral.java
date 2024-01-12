@@ -7,9 +7,4 @@ class ExprLiteral extends Expression {
     ExprLiteral(Object value) {
         this.value = value;
     }
-
-    @Override
-    public Object resolver(TablaSimbolos tabla) {
-        return value;
-    }
 }

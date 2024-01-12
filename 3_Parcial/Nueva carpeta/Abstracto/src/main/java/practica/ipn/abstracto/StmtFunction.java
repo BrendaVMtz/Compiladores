@@ -14,9 +14,4 @@ public class StmtFunction extends Statement {
         this.params = params;
         this.body = body;
     }
-
-    @Override
-    public void ejecutar(TablaSimbolos tabla) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

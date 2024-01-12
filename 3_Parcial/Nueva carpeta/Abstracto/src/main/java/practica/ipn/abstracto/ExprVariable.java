@@ -8,9 +8,4 @@ class ExprVariable extends Expression {
     ExprVariable(Token name) {
         this.name = name;
     }
-
-    @Override
-    public Object resolver(TablaSimbolos tabla) {
-        
-    }
 }

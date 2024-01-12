@@ -13,12 +13,4 @@ public class ExprBinary extends Expression{
         this.right = right;
     }
 
-    @Override
-    public Object resolver(TablaSimbolos tabla) {
-        Object izq = left.resolver(tabla);
-        Object der = right.resolver(tabla);
-        
-        
-    }
-
 }
