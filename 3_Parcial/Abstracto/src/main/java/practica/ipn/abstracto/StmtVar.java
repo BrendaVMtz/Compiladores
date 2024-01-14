@@ -13,6 +13,10 @@ public class StmtVar extends Statement {
 
     @Override
     public void ejecutar(TablaSimbolos tabla) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (!tabla.existeIdentificador(name.lexema)) {
+            Object res = initializer.resolver(tabla);
+            tabla.asignar(name.lexema, res);
+        }
     }
 }

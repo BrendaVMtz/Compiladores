@@ -12,4 +12,9 @@ class ExprLiteral extends Expression {
     public Object resolver(TablaSimbolos tabla) {
         return value;
     }
+    
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

@@ -18,7 +18,22 @@ public class ExprBinary extends Expression{
         Object izq = left.resolver(tabla);
         Object der = right.resolver(tabla);
         
+        // TODO: Añadir más tipoa
+        if (izq instanceof Integer && der instanceof Integer) {
+            switch (operator.lexema) {
+                case "+":
+                    return (Integer) izq + (Integer) der;
+                case "-":
+                    return (Integer) izq - (Integer) der;
+                case "*":
+                    return (Integer) izq * (Integer) der;
+                case "/":
+                    return (Integer) izq / (Integer) der;
+                default: return null;
+            }
+        }
         
+        return null;
     }
 
 }

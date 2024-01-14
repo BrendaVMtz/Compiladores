@@ -10,7 +10,7 @@ public class StmtPrint extends Statement {
 
     @Override
     public void ejecutar(TablaSimbolos tabla) {
-        Object res = expression.resolver(tabla);
-        System.out.println(res);
+        //Object res = expression.resolver(tabla);
+        System.out.println(expression.resolver(tabla));
     }
 }

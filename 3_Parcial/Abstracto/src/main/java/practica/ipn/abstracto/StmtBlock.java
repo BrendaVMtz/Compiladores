@@ -12,6 +12,8 @@ public class StmtBlock extends Statement{
 
     @Override
     public void ejecutar(TablaSimbolos tabla) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Statement statement : statements) {
+            statement.ejecutar(tabla);
+        }
     }
 }

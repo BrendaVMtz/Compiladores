@@ -242,7 +242,7 @@ public class Scanner {
 /////////////////////////////////////////////////////////////////                    
                 case 2:
                     if(c == '='){
-                        lexema+=c;
+                        lexema += c;
                         Token t = new Token(TipoToken.LESS_EQUAL, lexema);
                         tokens.add(t);
 
@@ -279,6 +279,7 @@ public class Scanner {
                 
                 case 4:
                     if(c == '='){
+                        lexema += c;
                         Token t = new Token(TipoToken.EQUAL_EQUAL, lexema);
                         tokens.add(t);
 
@@ -296,12 +297,13 @@ public class Scanner {
                 
                 case 5:
                     if(c == '='){
+                        lexema += c;
                         Token t = new Token(TipoToken.BANG_EQUAL, lexema);
                         tokens.add(t);
 
                         estado = 0;
                         lexema = "";
-                        i--;
+                        // i--;
                     }else{
                         Token t = new Token(TipoToken.BANG, lexema);
                         tokens.add(t);

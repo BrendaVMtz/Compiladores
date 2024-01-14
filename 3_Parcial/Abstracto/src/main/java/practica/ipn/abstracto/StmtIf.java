@@ -14,6 +14,15 @@ public class StmtIf extends Statement {
 
     @Override
     public void ejecutar(TablaSimbolos tabla) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object conditionResult = condition.resolver(tabla);
+        
+        if ((Boolean) conditionResult instanceof Boolean) {
+            if ((Boolean) condition.resolver(tabla)) {
+            thenBranch.ejecutar(tabla);
+            }
+            else {
+                elseBranch.ejecutar(tabla);
+            }
+        }
     }
 }

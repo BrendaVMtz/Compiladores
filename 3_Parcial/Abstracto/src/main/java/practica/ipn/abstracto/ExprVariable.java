@@ -11,6 +11,6 @@ class ExprVariable extends Expression {
 
     @Override
     public Object resolver(TablaSimbolos tabla) {
-        
+        return tabla.obtener(name.lexema);
     }
 }

@@ -50,12 +50,18 @@ public class Parser {
     
     public boolean analisis(){
         List<Statement> lstStmt = null;
-        System.out.println(lstStmt);
+        // System.out.println(lstStmt);
         lstStmt = Declaration();
         if(preanalisis.tipo == TipoToken.EOF){
-            System.out.println("Consulta correcta");
-            System.out.println(lstStmt);
-            return  true;
+            // System.out.println("Consulta correcta");
+            // System.out.println(lstStmt);
+            TablaSimbolos tabla = new TablaSimbolos();
+            
+            for (Statement statement : lstStmt) {
+                statement.ejecutar(tabla);
+            }
+            
+            return true;
         }else {
             System.out.println("Se encontraron errores");
         }
@@ -78,6 +84,7 @@ public class Parser {
                 lstStmt2 = Declaration2(lstStmt2);
             return lstStmt2;
             case BANG, MINUS, TRUE, FALSE, NULL, NUMBER, STRING, IDENTIFIER, LEFT_PAREN, FOR, IF, RETURN, WHILE, LEFT_BRACE, PRINT:
+                // System.out.println(preanalisis);
                 AbstractList<Statement> lstStmt3 = new ArrayList();
                 lstStmt3.add(Statement());
                 lstStmt3 = Declaration2(lstStmt3);
@@ -156,6 +163,9 @@ public class Parser {
                         match(TipoToken.LEFT_PAREN);
                         Statement st5 = While();
                     return st5;
+                    case BANG, MINUS, TRUE, FALSE, NULL, NUMBER, STRING, IDENTIFIER, LEFT_PAREN:
+                        Statement st7 = expr_stmt();
+                        return st7;
                     default:
                         StmtBlock st6 = Block();
                     return st6;
@@ -238,6 +248,7 @@ public class Parser {
     }
     
     private Statement Print(){
+        match(TipoToken.PRINT);
         Expression ex = expression();
         match(TipoToken.SEMICOLON);
         return new StmtPrint(ex);
@@ -258,7 +269,7 @@ public class Parser {
     
     private StmtBlock Block(){
         match(TipoToken.LEFT_BRACE);
-        List<Statement> Lst =(List<Statement>) Declaration();
+        List<Statement> Lst = (List<Statement>) Declaration();
         match(TipoToken.RIGHT_BRACE);
         return new StmtBlock(Lst);
     }
@@ -267,6 +278,7 @@ public class Parser {
         Expression exp = assignment();
         return exp;
     }
+    
     private Expression assignment(){
         Expression exp = logic_or();
         exp = assignment_op(exp);
@@ -335,16 +347,17 @@ public class Parser {
                 match(TipoToken.BANG_EQUAL);
                 Expression exp = comparison();
                 exp = Equaly2(exp);
-                Expression exB = new ExprBinary(ex, tipo, exp);
-            return Equaly2(exB);
+                Expression exB = new ExprLogical(ex, tipo, exp);
+                return Equaly2(exB);
             case EQUAL_EQUAL:    
                 Token tipo2 = tokens.get(i);
-                match(TipoToken.BANG_EQUAL);
+                match(TipoToken.EQUAL_EQUAL);
                 Expression exp2 = comparison();
                 exp2 = Equaly2(exp2);
-                Expression exB2 = new ExprBinary(ex, tipo2, exp2);
-            return Equaly2(exB2);
+                Expression exB2 = new ExprLogical(ex, tipo2, exp2);
+                return Equaly2(exB2);
         }
+        
         return ex;
     }
     
@@ -360,7 +373,7 @@ public class Parser {
                 Token op = tokens.get(i);
                 match(TipoToken.GREATER);
                 Expression exp = Term();
-                exp = new ExprBinary(ex, op, exp);
+                exp = new ExprLogical(ex, op, exp);
                 exp = Comparison_2(exp);
                 
             return exp;
@@ -368,21 +381,21 @@ public class Parser {
                 Token op1 = tokens.get(i);
                 match(TipoToken.GREATER_EQUAL);
                 Expression exp2 = Term();
-                exp2 = new ExprBinary(ex, op1, exp2);
+                exp2 = new ExprLogical(ex, op1, exp2);
                 exp2 = Comparison_2(exp2);
             return exp2;
             case LESS:
                 Token op2 = tokens.get(i);
                 match(TipoToken.LESS);
                 Expression exp3 = Term();
-                exp3 = new ExprBinary(ex, op2, exp3);
+                exp3 = new ExprLogical(ex, op2, exp3);
                 exp3 = Comparison_2(exp3);
             return exp3;
             case LESS_EQUAL:
                 Token op3 = tokens.get(i);
                 match(TipoToken.LESS_EQUAL);
                 Expression exp4 = Term();
-                exp4 = new ExprBinary(ex, op3, exp4);
+                exp4 = new ExprLogical(ex, op3, exp4);
                 exp4 = Comparison_2(exp4);
             return exp4;
         }
@@ -402,19 +415,20 @@ public class Parser {
                 match(TipoToken.MINUS);
                 Token operador = previous();
                 ex = Factor();
-                ex = new ExprBinary(exp, operador, ex );
+                ex = new ExprBinary(exp, operador, ex);
                 ex = Term2(ex);
             return ex;
             case PLUS:
                 Token op = tokens.get(i);
                 match(TipoToken.PLUS);
                 ex = Factor();
-                ex = new ExprBinary(exp, op, ex );
+                ex = new ExprBinary(exp, op, ex);
                 ex = Term2(ex);
             return ex;
             default:
-                Token op1 = tokens.get(i);
-                return new ExprBinary(exp, op1, exp);
+                //Token op1 = tokens.get(i);
+                //return new ExprBinary(exp, op1, exp);
+                return exp;
         }
     }
     
@@ -491,11 +505,11 @@ public class Parser {
             case NUMBER:
                 Token numero = tokens.get(i);
                 match(TipoToken.NUMBER);
-                return new ExprLiteral(numero.tipo);
+                return new ExprLiteral(numero.literal);
             case STRING:
                 match(TipoToken.STRING);
                 Token cadena = previous();
-                return new ExprLiteral(cadena.tipo);
+                return new ExprLiteral(cadena.literal);
             case IDENTIFIER:
                 match(TipoToken.IDENTIFIER);
                 Token id = previous();
@@ -503,7 +517,6 @@ public class Parser {
             case LEFT_PAREN:
                 match(TipoToken.LEFT_PAREN);
                 Expression expr = expression();
-                // Tiene que ser cachado aquello que retorna
                 match(TipoToken.RIGHT_PAREN);
                 return new ExprGrouping(expr);
         }
@@ -570,7 +583,6 @@ public class Parser {
     
     private void match(TipoToken tt){
         if(preanalisis.tipo ==  tt){
-            System.out.print("\n"+preanalisis.tipo);
             i++; 
             preanalisis = tokens.get(i);
         }

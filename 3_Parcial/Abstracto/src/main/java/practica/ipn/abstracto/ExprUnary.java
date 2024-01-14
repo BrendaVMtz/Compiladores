@@ -13,6 +13,16 @@ public class ExprUnary extends Expression{
 
     @Override
     public Object resolver(TablaSimbolos tabla) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object der = right.resolver(tabla);
+        
+        if ((Integer) der instanceof Integer) {
+            switch (operator.lexema) {
+                case "+": return der;
+                case "-": return (-1) * (Integer) der;
+                default: return null;
+            }
+        }
+        
+        return null;
     }
 }

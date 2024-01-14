@@ -12,10 +12,10 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>Prueba2.txt</exec.appArgs>
+                <exec.appArgs>custom.txt</exec.appArgs>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\karel\OneDrive\Documentos</exec.workingdir>
+                <exec.workingdir>/home/emma/Downloads/pruebas</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -30,11 +30,11 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>Prueba2.txt</exec.appArgs>
+                <exec.appArgs>custom.txt</exec.appArgs>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.workingdir>C:\Users\karel\OneDrive\Documentos</exec.workingdir>
+                <exec.workingdir>/home/emma/Downloads/pruebas</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -51,8 +51,8 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>Prueba2.txt</exec.appArgs>
-                <exec.workingdir>C:\Users\karel\OneDrive\Documentos</exec.workingdir>
+                <exec.appArgs>custom.txt</exec.appArgs>
+                <exec.workingdir>/home/emma/Downloads/pruebas</exec.workingdir>
             </properties>
         </action>
     </actions>

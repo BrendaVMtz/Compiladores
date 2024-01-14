@@ -11,6 +11,7 @@ public class StmtExpression extends Statement {
 
     @Override
     public void ejecutar(TablaSimbolos tabla) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        expression.resolver(tabla);
     }
 }
