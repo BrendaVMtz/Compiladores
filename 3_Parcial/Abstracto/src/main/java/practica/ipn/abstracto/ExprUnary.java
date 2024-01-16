@@ -15,6 +15,7 @@ public class ExprUnary extends Expression{
     public Object resolver(TablaSimbolos tabla) {
         Object der = right.resolver(tabla);
         
+        // TODO: ! -> Booleanos y distintos tipos de datos
         if ((Integer) der instanceof Integer) {
             switch (operator.lexema) {
                 case "+": return der;

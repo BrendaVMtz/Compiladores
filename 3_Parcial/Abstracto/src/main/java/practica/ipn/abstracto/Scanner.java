@@ -350,8 +350,8 @@ public class Scanner {
                 break;
                 
                 case 10:
-                    if(c == '\r'){
-                        estado=0;
+                    if(c == '\n'){
+                        estado = 0;
                     }else{
                         estado = 10;
                     }

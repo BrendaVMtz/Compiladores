@@ -17,6 +17,7 @@ public class StmtFunction extends Statement {
 
     @Override
     public void ejecutar(TablaSimbolos tabla) {
+        // TODO: Tienes que insertar lo que te devuelva la función, resolver el body y los params (Idea)
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

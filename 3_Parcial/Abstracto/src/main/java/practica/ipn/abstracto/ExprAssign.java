@@ -14,11 +14,11 @@ public class ExprAssign extends Expression{
     @Override
     public Object resolver(TablaSimbolos tabla) {
         Object res = value.resolver(tabla);
+        
         if (tabla.existeIdentificador(name.lexema)) {
             tabla.asignar(name.lexema, res);
-            return res;
         }
-        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        return null;
+        
+        return res;
     }
 }

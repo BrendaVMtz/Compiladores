@@ -282,14 +282,15 @@ public class Parser {
     private Expression assignment(){
         Expression exp = logic_or();
         exp = assignment_op(exp);
+        // System.out.println(exp);
         return exp;
     }
     
     private Expression assignment_op(Expression exp){
         switch(preanalisis.tipo){
             case EQUAL:
-                Token tipo = tokens.get(i);
                 match(TipoToken.EQUAL);
+                Token tipo = tokens.get(i);
                 Expression aux = expression();
                 ExprAssign ex = new ExprAssign(tipo, aux);
                 return ex;

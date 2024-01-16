@@ -16,6 +16,7 @@ public class StmtLoop extends Statement {
         if ((Boolean) conditionResult instanceof Boolean) {
             while ((Boolean) conditionResult) {
                 body.ejecutar(tabla);
+                conditionResult = condition.resolver(tabla);
             }
         }
     }
